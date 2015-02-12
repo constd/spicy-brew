@@ -8,7 +8,7 @@ n = [5, 10, 20, 40]
 usr = features.user_data()  # user replies / ground truth
 cxtT = features.context(enable_descr=False)  # tags
 cxtD = features.context(enable_descr=True)  # tags & descriptions
-cnt, truth, feature_names = features.content()  # content, ground truth and feature_names
+cnt, truth, feature_names = features.content()  # content, ground truth and fn
 
 # reduce dimensionality
 # content via feature selection
