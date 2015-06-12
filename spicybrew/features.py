@@ -1,7 +1,7 @@
 __author__ = 'const'
 from io import *
 import gaia2 as g2
-from numpy import zeros, mean, asarray, size
+from numpy import zeros, mean, asarray, size, diag
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 
@@ -83,7 +83,7 @@ def context(enable_descr=True, mindf=.0, maxdf=1):
     return vec
 
 
-def user_data(idlist='data/idList.json', user_answers='data/answers.txt'):
+def user_data(idlist='data/idList.json', user_answers='data/answers.txt', norm=False, todiag=0):
     ids = jread(idlist)
     ans = jread(user_answers)
     usm = zeros((120, 120))
@@ -92,4 +92,6 @@ def user_data(idlist='data/idList.json', user_answers='data/answers.txt'):
         id = ans[str(an)]['file_ids']
         usm[ids.index(id[0]), ids.index(id[1])] = mean(ans[str(an)]['scorelist'])
         usm[ids.index(id[1]), ids.index(id[0])] = mean(ans[str(an)]['scorelist'])
-    return usm
+    if norm:
+        usm = usm/10.
+    return usm + diag([todiag] * usm.shape[0])
