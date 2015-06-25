@@ -59,7 +59,7 @@ def content(filename='data/idList.json', dataset='data/fs5c.db'):
     return asarray(tosklearn), target, feats
 
 
-def context(enable_descr=True, mindf=.0, maxdf=1):
+def context(enable_descr=True, mindf=.06, maxdf=.99):
     # we want the dataset
     ids = jread('data/idList.json')
     metadata = 'data/Freesound5ClassDataset/api_sound_metadata/'
@@ -75,9 +75,12 @@ def context(enable_descr=True, mindf=.0, maxdf=1):
         md.append(final_thing)
 
     # prepare vectorizer
-    cv = TfidfVectorizer(min_df=mindf,
-                         max_df=maxdf,
-                         stop_words='english')
+    if enable_descr:
+        cv = TfidfVectorizer(min_df=mindf,
+                             max_df=maxdf,
+                             stop_words='english')
+    else:
+        cv = TfidfVectorizer()
     cv.fit(md)
     vec = cv.transform(md)
     return vec
